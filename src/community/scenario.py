@@ -27,6 +27,11 @@ REGION_X = {
     "required_microscopes": 1,
     "required_rdt_per_month": 120,
 
+    # Geographic and digital access
+    "transport_access": "LIMITED",
+    "connectivity": "POOR",
+    "geographic_access_risk": "HIGH",
+
     # Resource impact assumptions
     "health_worker_impact": 80,
     "microscope_impact": 90,

@@ -460,6 +460,65 @@ st.caption(
     "fairness metric."
 )
 
+# ============================================================
+# HEALTH EQUITY INTELLIGENCE
+# ============================================================
+
+section("Health Equity Intelligence", "⚖️")
+
+baseline_health_equity = baseline_simulation["health_equity"]
+
+show_metric_row(
+    [
+        (
+            "Equity Exposure",
+            baseline_health_equity["equity_exposure"],
+        ),
+        (
+            "Evidence-Equity Exposure",
+            baseline_health_equity["evidence_equity_exposure"],
+        ),
+        (
+            "Visibility Gap",
+            baseline_health_equity["visibility_gap"],
+        ),
+        (
+            "Resource Constraint",
+            baseline_health_equity["resource_constraint"],
+        ),
+    ]
+)
+
+show_metric_row(
+    [
+        (
+            "Underserved Population",
+            f'{baseline_health_equity["underserved_population"]:,.0f}',
+        ),
+        (
+            "Geographic Exposure",
+            baseline_health_equity["geographic_exposure"],
+        ),
+        (
+            "Exposure Factors",
+            str(baseline_health_equity["exposure_factors"]),
+        ),
+        (
+            "Evidence Debt",
+            f'{baseline_health_equity["evidence_debt"]:,.0f}',
+        ),
+    ]
+)
+
+st.subheader("Health Equity Interpretation")
+st.info(baseline_health_equity["interpretation"])
+
+st.caption(
+    "Synthetic Health Equity Intelligence prototype. "
+    "These indicators are not validated population-level equity, "
+    "fairness, causal, or health-outcome measures."
+)
+
 
 # ============================================================
 # EVIDENCE INTELLIGENCE

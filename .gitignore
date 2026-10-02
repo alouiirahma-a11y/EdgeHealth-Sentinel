@@ -5,3 +5,7 @@ __pycache__/
 app/pyc_recovery_tool/
 app/bytecode_full.txt
 app/streamlit_app_corrupted_backup.py
+data/
+app/recovered/
+app/streamlit_app_before_equity_intelligence.py
+src/simulation/what_if_backup.py

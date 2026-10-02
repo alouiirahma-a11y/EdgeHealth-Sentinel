@@ -1,5 +1,6 @@
 ﻿from src.community.evidence import analyze_evidence
 from src.equity.equity_audit import audit_equity
+from src.equity.health_equity import analyze_health_equity
 
 
 def simulate_region(
@@ -128,9 +129,7 @@ def simulate_region(
     # --------------------------------------------------------
 
     if simulated_rdt > 0:
-        capacity_exceeded = (
-            simulated_tests > simulated_rdt
-        )
+        capacity_exceeded = simulated_tests > simulated_rdt
     else:
         capacity_exceeded = simulated_tests > 0
 
@@ -156,6 +155,26 @@ def simulate_region(
         resource_access_rate=evidence[
             "resource_availability_proxy"
         ],
+    )
+
+    # --------------------------------------------------------
+    # HEALTH EQUITY INTELLIGENCE
+    # --------------------------------------------------------
+
+    health_equity = analyze_health_equity(
+        population=region["population"],
+        underserved_rate=region["underserved_rate"],
+        testing_coverage=evidence["testing_coverage"],
+        evidence_debt=evidence["evidence_debt"],
+        resource_availability=evidence[
+            "resource_availability_proxy"
+        ],
+        blind_spot_risk=evidence["blind_spot_risk"],
+        geographic_access_risk=region[
+            "geographic_access_risk"
+        ],
+        transport_access=region["transport_access"],
+        connectivity=region["connectivity"],
     )
 
     # --------------------------------------------------------
@@ -190,6 +209,8 @@ def simulate_region(
         },
 
         "equity": equity,
+
+        "health_equity": health_equity,
     }
 
 
@@ -204,6 +225,9 @@ def compare_scenarios(baseline, scenario):
     baseline_equity = baseline.get("equity")
     scenario_equity = scenario.get("equity")
 
+    baseline_health_equity = baseline.get("health_equity")
+    scenario_health_equity = scenario.get("health_equity")
+
     comparison = {
         "testing_coverage_change": (
             scenario_evidence["testing_coverage"]
@@ -215,11 +239,6 @@ def compare_scenarios(baseline, scenario):
             - baseline_evidence["evidence_debt"]
         ),
 
-        "capacity_utilization_change": (
-            scenario_evidence["capacity_utilization"]
-            - baseline_evidence["capacity_utilization"]
-        ),
-
         "blind_spot_changed": (
             baseline_evidence["blind_spot_risk"]
             != scenario_evidence["blind_spot_risk"]
@@ -227,7 +246,6 @@ def compare_scenarios(baseline, scenario):
     }
 
     if baseline_equity and scenario_equity:
-
         comparison["resource_availability_change"] = (
             scenario_equity["resource_access_rate"]
             - baseline_equity["resource_access_rate"]
@@ -236,6 +254,22 @@ def compare_scenarios(baseline, scenario):
         comparison["equity_risk_changed"] = (
             baseline_equity["equity_risk"]
             != scenario_equity["equity_risk"]
+        )
+
+    if baseline_health_equity and scenario_health_equity:
+        comparison["health_equity_exposure_changed"] = (
+            baseline_health_equity["equity_exposure"]
+            != scenario_health_equity["equity_exposure"]
+        )
+
+        comparison["evidence_equity_exposure_changed"] = (
+            baseline_health_equity["evidence_equity_exposure"]
+            != scenario_health_equity["evidence_equity_exposure"]
+        )
+
+        comparison["visibility_gap_changed"] = (
+            baseline_health_equity["visibility_gap"]
+            != scenario_health_equity["visibility_gap"]
         )
 
     return comparison
