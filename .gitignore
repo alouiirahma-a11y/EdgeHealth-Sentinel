@@ -1,0 +1,7 @@
+﻿.venv/
+__pycache__/
+*.pyc
+.streamlit/
+app/pyc_recovery_tool/
+app/bytecode_full.txt
+app/streamlit_app_corrupted_backup.py
